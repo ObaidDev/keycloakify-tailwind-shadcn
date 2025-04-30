@@ -2,6 +2,20 @@ import React from "react";
 import { clsx } from "keycloakify/tools/clsx";
 import { kcSanitize } from "keycloakify/lib/kcSanitize";
 
+// Import icons from lucide-react
+import { 
+    Github, 
+    Facebook, 
+    Twitter, 
+    Linkedin, 
+    Mail, 
+    Apple, 
+    Gitlab, 
+    Instagram,
+    Chrome,
+    MessageCircle
+} from "lucide-react";
+
 export interface SocialProvidersProps {
     social:
         | {
@@ -20,6 +34,35 @@ export interface SocialProvidersProps {
         password: boolean;
     };
 }
+
+
+const getSocialIcon = (alias : any) => {
+    const lowerAlias = alias.toLowerCase();
+    
+    // Map of social providers to their respective icons and brand colors
+    const providerIcons = {
+      github: { Icon: Github, color: "#24292e" },
+      google: { Icon: Chrome, color: "#DB4437" },
+      facebook: { Icon: Facebook, color: "#1877F2" },
+      twitter: { Icon: Twitter, color: "#1DA1F2" },
+      linkedin: { Icon: Linkedin, color: "#0A66C2" },
+      apple: { Icon: Apple, color: "#000000" },
+      gitlab: { Icon: Gitlab, color: "#FC6D26" },
+      instagram: { Icon: Instagram, color: "#E4405F" },
+      discord: { Icon: MessageCircle, color: "#5865F2" },
+      // Add more providers as needed
+    };
+  
+    // Find the matching provider or return a default
+    for (const [provider, config] of Object.entries(providerIcons)) {
+      if (lowerAlias.includes(provider)) {
+        return config;
+      }
+    }
+    
+    // Default icon if no match is found
+    return { Icon: Mail, color: "#6b7280" };
+};
 
 export const SocialProviders: React.FC<SocialProvidersProps> = ({
     social,
@@ -49,32 +92,35 @@ export const SocialProviders: React.FC<SocialProvidersProps> = ({
                                         : "grid-cols-1" // Conditional grid columns
                                 )}
                             >
-                                {social.providers.map((...[p, , providers]) => (
-                                    <div
-                                        key={p.alias}
-                                        className=" items-center bg-accent  w-full py-1 my-1.5 border rounded-lg px-3 hover:bg-primary hover:text-primary-foreground"
-                                    >
-                                        <a
-                                            id={`social-${p.alias}`}
-                                            className="flex flex-row items-center justify-center  w-full py-2 "
-                                            type="button"
-                                            href={p.loginUrl}
+                                {social.providers.map((p) => {
+                                    const { Icon, color } = getSocialIcon(p.alias);
+                                    
+                                    return (
+                                        <div
+                                            key={p.alias}
+                                            className="items-center bg-accent w-full py-1 my-1.5 border rounded-lg px-3 hover:bg-primary hover:text-primary-foreground transition-colors duration-200"
                                         >
-                                            {p.iconClasses && (
-                                                <i
-                                                    className={clsx(p.iconClasses)}
-                                                    aria-hidden="true"
-                                                ></i>
-                                            )}
-                                            <span
-                                                className="mx-3"
-                                                dangerouslySetInnerHTML={{
-                                                    __html: kcSanitize(p.displayName)
-                                                }}
-                                            ></span>
-                                        </a>
-                                    </div>
-                                ))}
+                                            <a
+                                                id={`social-${p.alias}`}
+                                                className="flex flex-row items-center justify-center w-full py-2"
+                                                type="button"
+                                                href={p.loginUrl}
+                                            >
+                                                <Icon 
+                                                    size={24} 
+                                                    style={{ color }} 
+                                                    className="mr-2" 
+                                                />
+                                                <span
+                                                    className="mx-3"
+                                                    dangerouslySetInnerHTML={{
+                                                        __html: kcSanitize(p.displayName)
+                                                    }}
+                                                ></span>
+                                            </a>
+                                        </div>
+                                    );
+                                })}
                             </div>
                         </div>
                     )}
