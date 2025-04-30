@@ -12,8 +12,27 @@ import { Separator } from "../../components/ui/separator";
 import { PasswordWrapper } from "../../components/ui/PasswordWrapper";
 import SocialProviders from "../../components/ui/SocialProviders";
 import { kcSanitize } from "keycloakify/lib/kcSanitize";
+import backgroundImage from "../../assets/img/8359155.jpg";
 
 export default function Login(props: PageProps<Extract<KcContext, { pageId: "login.ftl" }>, I18n>) {
+    const [bgLoaded, setBgLoaded] = useState(false);
+    const [progress, setProgress] = useState(13)
+
+    useEffect(() => {
+        const img = new Image();
+        img.src = backgroundImage;
+        img.onload = () => setBgLoaded(true);
+    }, []);
+
+
+    useEffect(() => {
+        const timer = setTimeout(() => setProgress(66), 500)
+        return () => clearTimeout(timer)
+    }, [])
+
+
+    
+
     const { kcContext, i18n, doUseDefaultCss, classes } = props;
 
     const { kcClsx } = getKcClsx({
@@ -31,6 +50,15 @@ export default function Login(props: PageProps<Extract<KcContext, { pageId: "log
     const displayInfo = realm.password && realm.registrationAllowed && !registrationDisabled;
     const displayMessage = !messagesPerField.existsError("username", "password");
     
+    // block the login page from rendering until the background image is fully loaded
+    if (!bgLoaded) {
+        return (
+          <div className="w-screen h-screen flex items-center justify-center bg-black">
+            <span className="text-white text-lg">Loading...</span>
+          </div>
+        );
+    }
+
     const infoNode = (
         <div id="kc-registration" className="text-center mt-4">
             <span className="text-foreground">
@@ -184,8 +212,8 @@ export default function Login(props: PageProps<Extract<KcContext, { pageId: "log
             <div className="hidden md:flex md:w-1/2 relative bg-slate-100">
                 <div className="w-full h-full relative">
                     <img 
-                        src={`${window.location.origin}/keycloakify-dev-resources/login/img/3d-rendering-illustration-botanic-garden.jpg`} 
-                        alt="Woman smiling with laptop" 
+                        src={backgroundImage} 
+                        alt="side background of trackswitfly"
                         className="w-full h-full object-cover"
                     />
                     <div className="absolute bottom-10 left-10 text-white p-6 max-w-md z-10">
