@@ -13,6 +13,7 @@ import { PasswordWrapper } from "../../components/ui/PasswordWrapper";
 import SocialProviders from "../../components/ui/SocialProviders";
 import { kcSanitize } from "keycloakify/lib/kcSanitize";
 import backgroundImage from "../../assets/img/8359155.jpg";
+import TrackSwiftlyLogo from "../../components/ui/TrackSwiftlyLogo";
 
 export default function Login(props: PageProps<Extract<KcContext, { pageId: "login.ftl" }>, I18n>) {
     const [bgLoaded, setBgLoaded] = useState(false);
@@ -228,9 +229,12 @@ export default function Login(props: PageProps<Extract<KcContext, { pageId: "log
             {/* Right Column - Login Form Section */}
             <div className="w-full md:w-1/2 flex items-center justify-center p-8">
                 <div className="w-full max-w-md space-y-6">
-                    <div className="text-center mb-4">
-                        <h1 className="text-2xl font-bold">{headerNode}</h1>
+                    <div className="mb-8">
+                        <TrackSwiftlyLogo />
                     </div>
+                    {/* <div className="text-center mb-4">
+                        <h1 className="text-2xl font-bold">{headerNode}</h1>
+                    </div> */}
                     
                     {socialProvidersNode}
                     
