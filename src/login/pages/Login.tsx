@@ -12,27 +12,16 @@ import { Separator } from "../../components/ui/separator";
 import { PasswordWrapper } from "../../components/ui/PasswordWrapper";
 import SocialProviders from "../../components/ui/SocialProviders";
 import { kcSanitize } from "keycloakify/lib/kcSanitize";
-import backgroundImage from "../../assets/img/8359155.jpg";
 import TrackSwiftlyLogo from "../../components/ui/TrackSwiftlyLogo";
+import MapBackground from "../../components/ui/MapBackground";
 
 export default function Login(props: PageProps<Extract<KcContext, { pageId: "login.ftl" }>, I18n>) {
     const [bgLoaded, setBgLoaded] = useState(false);
-    const [progress, setProgress] = useState(13)
+    const [hoveredArea, setHoveredArea] = useState<string | null>(null);
 
     useEffect(() => {
-        const img = new Image();
-        img.src = backgroundImage;
-        img.onload = () => setBgLoaded(true);
+        setBgLoaded(true);
     }, []);
-
-
-    useEffect(() => {
-        const timer = setTimeout(() => setProgress(66), 500)
-        return () => clearTimeout(timer)
-    }, [])
-
-
-    
 
     const { kcContext, i18n, doUseDefaultCss, classes } = props;
 
@@ -209,21 +198,14 @@ export default function Login(props: PageProps<Extract<KcContext, { pageId: "log
     // Instead of using Template, render our custom layout directly
     return (
         <div className="flex min-h-screen w-full">
-            {/* Left Column - Visual Testimonial Section */}
-            <div className="hidden md:flex md:w-1/2 relative bg-slate-100">
-                <div className="w-full h-full relative">
-                    <img 
-                        src={backgroundImage} 
-                        alt="side background of trackswitfly"
-                        className="w-full h-full object-cover"
-                    />
-                    <div className="absolute bottom-10 left-10 text-white p-6 max-w-md z-10">
-                        <p className="text-3xl font-bold mb-2">"Simply all the tools that my team and I need."</p>
-                        <p className="text-xl font-medium">Karen Yue</p>
-                        <p className="text-lg font-light">Director of Digital Marketing Technology</p>
-                    </div>
-                    <div className="absolute inset-0 bg-black bg-opacity-30"></div>
-                </div>
+            {/* Left Column - Interactive Map Section */}
+            <div className="hidden md:block md:w-1/2 relative">
+                <MapBackground hoveredArea={hoveredArea} onHoverArea={setHoveredArea} />
+                {/* <div className="absolute bottom-10 left-10 text-white p-6 max-w-md z-10">
+                    <p className="text-3xl font-bold mb-2">"Simply all the tools that my team and I need."</p>
+                    <p className="text-xl font-medium">Karen Yue</p>
+                    <p className="text-lg font-light">Director of Digital Marketing Technology</p>
+                </div> */}
             </div>
             
             {/* Right Column - Login Form Section */}
@@ -232,9 +214,6 @@ export default function Login(props: PageProps<Extract<KcContext, { pageId: "log
                     <div className="mb-8">
                         <TrackSwiftlyLogo />
                     </div>
-                    {/* <div className="text-center mb-4">
-                        <h1 className="text-2xl font-bold">{headerNode}</h1>
-                    </div> */}
                     
                     {socialProvidersNode}
                     
