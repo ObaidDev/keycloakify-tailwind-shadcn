@@ -199,7 +199,7 @@ export default function Login(props: PageProps<Extract<KcContext, { pageId: "log
     return (
         <div className="flex min-h-screen w-full">
             {/* Left Column - Interactive Map Section */}
-            <div className="hidden md:block md:w-1/2 relative">
+            <div className="hidden md:block md:w-[55%] relative border-r border-gray-200">
                 <MapBackground hoveredArea={hoveredArea} onHoverArea={setHoveredArea} />
                 {/* <div className="absolute bottom-10 left-10 text-white p-6 max-w-md z-10">
                     <p className="text-3xl font-bold mb-2">"Simply all the tools that my team and I need."</p>
@@ -209,7 +209,7 @@ export default function Login(props: PageProps<Extract<KcContext, { pageId: "log
             </div>
             
             {/* Right Column - Login Form Section */}
-            <div className="w-full md:w-1/2 flex items-center justify-center p-8">
+            <div className="w-full md:w-[45%] flex items-center justify-center p-8">
                 <div className="w-full max-w-md space-y-6">
                     <div className="mb-8">
                         <TrackSwiftlyLogo />
