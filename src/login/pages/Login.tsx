@@ -50,10 +50,14 @@ export default function Login(props: PageProps<Extract<KcContext, { pageId: "log
     }
 
     const infoNode = (
-        <div id="kc-registration" className="text-center mt-4">
-            <span className="text-foreground">
+        <div className="text-center mt-6">
+            <span className="text-sm text-muted-foreground">
                 {msgStr("noAccount")}{" "}
-                <a tabIndex={8} href={url.registrationUrl} className="font-medium text-primary hover:text-primary/90">
+                <a 
+                    tabIndex={8} 
+                    href={url.registrationUrl} 
+                    className="font-medium text-primary underline underline-offset-4 hover:text-primary/90"
+                >
                     {msgStr("doRegister")}
                 </a>
             </span>
@@ -61,10 +65,12 @@ export default function Login(props: PageProps<Extract<KcContext, { pageId: "log
     );
     
     const socialProvidersNode = social?.providers && social.providers.length > 0 ? (
-        <div>
+        <div className="space-y-4">
             <SocialProviders social={social} kcClsx={kcClsx} clsx={clsx} msg={msg} realm={realm} />
-            <div className="relative my-6">
-                <Separator className="absolute inset-0" />
+            <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                    <Separator className="w-full" />
+                </div>
                 <div className="relative flex justify-center text-xs uppercase">
                     <span className="bg-background px-2 text-muted-foreground">
                         {msg("identity-provider-login-label") || "OR"}
@@ -75,80 +81,41 @@ export default function Login(props: PageProps<Extract<KcContext, { pageId: "log
     ) : null;
 
     const formNode = (
-        <div id="kc-form">
-            <div id="kc-form-wrapper">
-                {realm.password && (
-                    <form
-                        id="kc-form-login"
-                        onSubmit={() => {
-                            setIsLoginButtonDisabled(true);
-                            return true;
-                        }}
-                        action={url.loginAction}
-                        method="post"
-                        className="space-y-6"
-                    >
-                        {!usernameHidden && (
-                            <div>
-                                <Label htmlFor="username" className="text-base font-medium">
-                                    {!realm.loginWithEmailAllowed
-                                        ? msg("username")
-                                        : !realm.registrationEmailAsUsername
-                                            ? msg("usernameOrEmail")
-                                            : msg("email")}
-                                </Label>
-                                <Input
-                                    tabIndex={2}
-                                    id="username"
-                                    className="mt-1"
-                                    name="username"
-                                    defaultValue={login.username ?? ""}
-                                    type="text"
-                                    autoFocus
-                                    autoComplete="username"
-                                    aria-invalid={messagesPerField.existsError("username", "password")}
-                                />
-                                {messagesPerField.existsError("username", "password") && (
-                                    <div
-                                        className="text-red-500 text-sm mt-1"
-                                        aria-live="polite"
-                                        dangerouslySetInnerHTML={{
-                                            __html: kcSanitize(messagesPerField.getFirstError("username", "password"))
-                                        }}
-                                    />
-                                )}
-                            </div>
-                        )}
-
-                        <div>
-                            <div className="flex items-center justify-between">
-                                <Label htmlFor="password" className="text-base font-medium">
-                                    {msg("password")}
-                                </Label>
-                                {realm.resetPasswordAllowed && (
-                                    <a 
-                                        tabIndex={6} 
-                                        href={url.loginResetCredentialsUrl}
-                                        className="text-sm font-medium text-primary hover:text-primary/90"
-                                    >
-                                        {msgStr("doForgotPassword")}
-                                    </a>
-                                )}
-                            </div>
-                            <PasswordWrapper kcClsx={kcClsx} i18n={i18n} passwordInputId="password">
-                                <Input
-                                    tabIndex={3}
-                                    id="password"
-                                    className="mt-1"
-                                    name="password"
-                                    type="password"
-                                    autoComplete="current-password"
-                                    aria-invalid={messagesPerField.existsError("username", "password")}
-                                />
-                            </PasswordWrapper>
-                            {usernameHidden && messagesPerField.existsError("username", "password") && (
+        <div className="space-y-6">
+            {realm.password && (
+                <form
+                    id="kc-form-login"
+                    onSubmit={() => {
+                        setIsLoginButtonDisabled(true);
+                        return true;
+                    }}
+                    action={url.loginAction}
+                    method="post"
+                    className="space-y-4"
+                >
+                    {!usernameHidden && (
+                        <div className="space-y-2">
+                            <Label htmlFor="username" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                                {!realm.loginWithEmailAllowed
+                                    ? msg("username")
+                                    : !realm.registrationEmailAsUsername
+                                        ? msg("usernameOrEmail")
+                                        : msg("email")}
+                            </Label>
+                            <Input
+                                tabIndex={2}
+                                id="username"
+                                name="username"
+                                defaultValue={login.username ?? ""}
+                                type="text"
+                                autoFocus
+                                autoComplete="username"
+                                aria-invalid={messagesPerField.existsError("username", "password")}
+                                className="h-10"
+                            />
+                            {messagesPerField.existsError("username", "password") && (
                                 <div
-                                    className="text-red-500 text-sm mt-1"
+                                    className="text-sm font-medium text-destructive"
                                     aria-live="polite"
                                     dangerouslySetInnerHTML={{
                                         __html: kcSanitize(messagesPerField.getFirstError("username", "password"))
@@ -156,70 +123,113 @@ export default function Login(props: PageProps<Extract<KcContext, { pageId: "log
                                 />
                             )}
                         </div>
+                    )}
 
-                        {realm.rememberMe && !usernameHidden && (
-                            <div className="flex items-center space-x-2">
-                                <input
-                                    tabIndex={5}
-                                    id="rememberMe"
-                                    className={clsx(checkboxVariants({}), "")}
-                                    name="rememberMe"
-                                    type="checkbox"
-                                    defaultChecked={!!login.rememberMe}
-                                />
-                                <Label htmlFor="rememberMe" className="text-sm font-medium">
-                                    {msgStr("rememberMe")}
-                                </Label>
-                            </div>
-                        )}
-
-                        <div id="kc-form-buttons" className={kcClsx("kcFormGroupClass")}>
-                            <Input 
-                                type="hidden" 
-                                id="id-hidden-input" 
-                                name="credentialId" 
-                                value={auth.selectedCredential} 
-                            />
-                            <Button 
-                                tabIndex={7} 
-                                disabled={isLoginButtonDisabled} 
-                                type="submit" 
-                                className="w-full py-2"
-                            >
-                                {msgStr("doLogIn")}
-                            </Button>
+                    <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                            <Label htmlFor="password" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                                {msg("password")}
+                            </Label>
+                            {realm.resetPasswordAllowed && (
+                                <a 
+                                    tabIndex={6} 
+                                    href={url.loginResetCredentialsUrl}
+                                    className="text-sm font-medium text-primary underline underline-offset-4 hover:text-primary/90"
+                                >
+                                    {msgStr("doForgotPassword")}
+                                </a>
+                            )}
                         </div>
-                    </form>
-                )}
-            </div>
+                        <PasswordWrapper kcClsx={kcClsx} i18n={i18n} passwordInputId="password">
+                            <Input
+                                tabIndex={3}
+                                id="password"
+                                name="password"
+                                type="password"
+                                autoComplete="current-password"
+                                aria-invalid={messagesPerField.existsError("username", "password")}
+                                className="h-10"
+                            />
+                        </PasswordWrapper>
+                        {usernameHidden && messagesPerField.existsError("username", "password") && (
+                            <div
+                                className="text-sm font-medium text-destructive"
+                                aria-live="polite"
+                                dangerouslySetInnerHTML={{
+                                    __html: kcSanitize(messagesPerField.getFirstError("username", "password"))
+                                }}
+                            />
+                        )}
+                    </div>
+
+                    {realm.rememberMe && !usernameHidden && (
+                        <div className="flex items-center space-x-2">
+                            <input
+                                tabIndex={5}
+                                id="rememberMe"
+                                className={clsx(checkboxVariants({}), "")}
+                                name="rememberMe"
+                                type="checkbox"
+                                defaultChecked={!!login.rememberMe}
+                            />
+                            <Label htmlFor="rememberMe" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                                {msgStr("rememberMe")}
+                            </Label>
+                        </div>
+                    )}
+
+                    <div className="space-y-4">
+                        <Input 
+                            type="hidden" 
+                            id="id-hidden-input" 
+                            name="credentialId" 
+                            value={auth.selectedCredential} 
+                        />
+                        <Button 
+                            tabIndex={7} 
+                            disabled={isLoginButtonDisabled} 
+                            type="submit" 
+                            className="w-full h-10"
+                        >
+                            {msgStr("doLogIn")}
+                        </Button>
+                    </div>
+                </form>
+            )}
         </div>
     );
 
-    // Instead of using Template, render our custom layout directly
+    // Login-02 inspired layout with your animated map
     return (
-        <div className="flex min-h-screen w-full">
-            {/* Left Column - Interactive Map Section */}
-            <div className="hidden md:block md:w-[55%] relative border-r border-gray-200">
-                <MapBackground hoveredArea={hoveredArea} onHoverArea={setHoveredArea} />
-                {/* <div className="absolute bottom-10 left-10 text-white p-6 max-w-md z-10">
-                    <p className="text-3xl font-bold mb-2">"Simply all the tools that my team and I need."</p>
-                    <p className="text-xl font-medium">Karen Yue</p>
-                    <p className="text-lg font-light">Director of Digital Marketing Technology</p>
-                </div> */}
+        <div className="grid min-h-svh lg:grid-cols-2">
+            {/* Left Column - Login Form Section (login-02 inspired) */}
+            <div className="flex flex-col gap-4 p-6 md:p-10">
+                <div className="flex flex-1 items-center justify-center">
+                    <div className="w-full max-w-xs space-y-6">
+                        <div className="flex flex-col space-y-2 text-center">
+                            <h1 className="text-2xl font-semibold tracking-tight">
+                                Welcome back
+                            </h1>
+                            <p className="text-sm text-muted-foreground">
+                                Enter your credentials to sign in to your account
+                            </p>
+                        </div>
+                        
+                        {socialProvidersNode}
+                        
+                        {formNode}
+                        
+                        {displayInfo && infoNode}
+                    </div>
+                </div>
             </div>
             
-            {/* Right Column - Login Form Section */}
-            <div className="w-full md:w-[45%] flex items-center justify-center p-8">
-                <div className="w-full max-w-md space-y-6">
-                    <div className="mb-8">
-                        <TrackSwiftlyLogo />
-                    </div>
-                    
-                    {socialProvidersNode}
-                    
-                    {formNode}
-                    
-                    {displayInfo && infoNode}
+            {/* Right Column - Your Animated Map Section with Logo */}
+            <div className="relative hidden bg-muted lg:block">
+                <MapBackground hoveredArea={hoveredArea} onHoverArea={setHoveredArea} />
+                {/* Logo overlay on the map */}
+                <div className="absolute top-10 left-10 z-10">
+                    <TrackSwiftlyLogo />
                 </div>
             </div>
         </div>
