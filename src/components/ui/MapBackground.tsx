@@ -84,18 +84,6 @@ const MapBackground = ({ hoveredArea, onHoverArea }: MapBackgroundProps) => {
         
         {/* Major roads/highways */}
         <g className="major-roads">
-          {/* Horizontal highways */}
-          <path className={`${animate ? 'opacity-100' : 'opacity-0'} transition-opacity duration-1000`}
-            d="M 0 250 L 1000 250" stroke="#444" strokeWidth="3" />
-          <path className={`${animate ? 'opacity-100' : 'opacity-0'} transition-opacity duration-1000 delay-300`}
-            d="M 0 750 L 1000 750" stroke="#444" strokeWidth="3" />
-          
-          {/* Vertical highways */}
-          <path className={`${animate ? 'opacity-100' : 'opacity-0'} transition-opacity duration-1000 delay-100`}
-            d="M 250 0 L 250 1000" stroke="#444" strokeWidth="3" />
-          <path className={`${animate ? 'opacity-100' : 'opacity-0'} transition-opacity duration-1000 delay-200`}
-            d="M 750 0 L 750 1000" stroke="#444" strokeWidth="3" />
-          
           {/* Curved connecting roads */}
           <path className={`${animate ? 'opacity-100' : 'opacity-0'} transition-opacity duration-1000 delay-400`}
             d="M 250 250 C 350 350, 650 350, 750 250" 
