@@ -225,10 +225,16 @@ export default function Login(props: PageProps<Extract<KcContext, { pageId: "log
             </div>
             
             {/* Right Column - Your Animated Map Section with Logo */}
-            <div className="relative hidden bg-muted lg:block">
-                <MapBackground hoveredArea={hoveredArea} onHoverArea={setHoveredArea} />
-                {/* Logo overlay on the map */}
-                <div className="absolute top-10 left-10 z-10">
+             <div 
+                className="relative hidden bg-muted lg:block bg-cover bg-center bg-no-repeat"
+                style={{
+                    backgroundImage: "url('/backgrounds/digital-map-with-road-network-highlights-routes-with-line-se/26aa712b-979e-4494-b7a0-457468712aca.jpg')"
+                }}
+            >
+                {/* Dark overlay for better logo visibility */}
+                <div className="absolute inset-0 bg-black/20"></div>
+                {/* Logo overlay on the image */}
+                <div className="absolute bottom-10 left-10 z-10">
                     <TrackSwiftlyLogo />
                 </div>
             </div>
