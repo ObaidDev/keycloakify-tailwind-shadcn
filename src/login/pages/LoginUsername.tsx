@@ -11,11 +11,9 @@ import { checkboxVariants } from "../../components/ui/checkbox";
 import { Separator } from "../../components/ui/separator";
 import { SocialProviders } from "../../components/ui/SocialProviders";
 import TrackSwiftlyLogo from "../../components/ui/TrackSwiftlyLogo";
-import MapBackground from "../../components/ui/MapBackground";
 
 export default function LoginUsername(props: PageProps<Extract<KcContext, { pageId: "login-username.ftl" }>, I18n>) {
     const [bgLoaded, setBgLoaded] = useState(false);
-    const [hoveredArea, setHoveredArea] = useState<string | null>(null);
 
     useEffect(() => {
         setBgLoaded(true);
@@ -46,10 +44,14 @@ export default function LoginUsername(props: PageProps<Extract<KcContext, { page
     const displayInfo = realm.password && realm.registrationAllowed && !registrationDisabled;
     
     const infoNode = displayInfo ? (
-        <div id="kc-registration" className="text-center mt-4">
-            <span className="text-foreground">
+        <div className="text-center mt-6">
+            <span className="text-sm text-muted-foreground">
                 {msgStr("noAccount")}{" "}
-                <a tabIndex={6} href={url.registrationUrl} className="font-medium text-primary hover:text-primary/90">
+                <a 
+                    tabIndex={6} 
+                    href={url.registrationUrl} 
+                    className="font-medium text-primary underline underline-offset-4 hover:text-primary/90"
+                >
                     {msgStr("doRegister")}
                 </a>
             </span>
@@ -57,10 +59,12 @@ export default function LoginUsername(props: PageProps<Extract<KcContext, { page
     ) : null;
     
     const socialProvidersNode = social?.providers && social.providers.length > 0 ? (
-        <div>
+        <div className="space-y-4">
             <SocialProviders social={social} kcClsx={kcClsx} clsx={clsx} msg={msg} realm={realm} />
-            <div className="relative my-6">
-                <Separator className="absolute inset-0" />
+            <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                    <Separator className="w-full" />
+                </div>
                 <div className="relative flex justify-center text-xs uppercase">
                     <span className="bg-background px-2 text-muted-foreground">
                         {msg("identity-provider-login-label") || "OR"}
@@ -71,99 +75,114 @@ export default function LoginUsername(props: PageProps<Extract<KcContext, { page
     ) : null;
 
     const formNode = (
-        <div id="kc-form">
-            <div id="kc-form-wrapper">
-                {realm.password && (
-                    <form
-                        id="kc-form-login"
-                        onSubmit={() => {
-                            setIsLoginButtonDisabled(true);
-                            return true;
-                        }}
-                        action={url.loginAction}
-                        method="post"
-                        className="space-y-6"
-                    >
-                        {!usernameHidden && (
-                            <div>
-                                <Label htmlFor="username" className="text-base font-medium">
-                                    {!realm.loginWithEmailAllowed
-                                        ? msg("username")
-                                        : !realm.registrationEmailAsUsername
-                                          ? msg("usernameOrEmail")
-                                          : msg("email")}
-                                </Label>
-                                <Input
-                                    tabIndex={2}
-                                    id="username"
-                                    className="mt-1"
-                                    name="username"
-                                    defaultValue={login.username ?? ""}
-                                    type="text"
-                                    autoFocus
-                                    autoComplete="off"
-                                    aria-invalid={messagesPerField.existsError("username")}
-                                />
-                                {messagesPerField.existsError("username") && (
-                                    <div className="text-red-500 text-sm mt-1" aria-live="polite">
-                                        {messagesPerField.getFirstError("username")}
-                                    </div>
-                                )}
-                            </div>
-                        )}
-
-                        {realm.rememberMe && !usernameHidden && (
-                            <div className="flex items-center space-x-2">
-                                <input
-                                    tabIndex={3}
-                                    className={clsx(checkboxVariants({}), "")}
-                                    id="rememberMe"
-                                    name="rememberMe"
-                                    type="checkbox"
-                                    defaultChecked={!!login.rememberMe}
-                                />
-                                <Label htmlFor="rememberMe" className="text-sm font-medium">
-                                    {msgStr("rememberMe")}
-                                </Label>
-                            </div>
-                        )}
-
-                        <div id="kc-form-buttons" className={kcClsx("kcFormGroupClass")}>
-                            <Button 
-                                tabIndex={4} 
-                                disabled={isLoginButtonDisabled} 
-                                type="submit" 
-                                className="w-full py-2"
-                            >
-                                {msgStr("doLogIn")}
-                            </Button>
+        <div className="space-y-6">
+            {realm.password && (
+                <form
+                    id="kc-form-login"
+                    onSubmit={() => {
+                        setIsLoginButtonDisabled(true);
+                        return true;
+                    }}
+                    action={url.loginAction}
+                    method="post"
+                    className="space-y-4"
+                >
+                    {!usernameHidden && (
+                        <div className="space-y-2">
+                            <Label htmlFor="username" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                                {!realm.loginWithEmailAllowed
+                                    ? msg("username")
+                                    : !realm.registrationEmailAsUsername
+                                      ? msg("usernameOrEmail")
+                                      : msg("email")}
+                            </Label>
+                            <Input
+                                tabIndex={2}
+                                id="username"
+                                name="username"
+                                defaultValue={login.username ?? ""}
+                                type="text"
+                                autoFocus
+                                autoComplete="off"
+                                aria-invalid={messagesPerField.existsError("username")}
+                                className="h-10"
+                            />
+                            {messagesPerField.existsError("username") && (
+                                <div className="text-sm font-medium text-destructive" aria-live="polite">
+                                    {messagesPerField.getFirstError("username")}
+                                </div>
+                            )}
                         </div>
-                    </form>
-                )}
-            </div>
+                    )}
+
+                    {realm.rememberMe && !usernameHidden && (
+                        <div className="flex items-center space-x-2">
+                            <input
+                                tabIndex={3}
+                                className={clsx(checkboxVariants({}), "")}
+                                id="rememberMe"
+                                name="rememberMe"
+                                type="checkbox"
+                                defaultChecked={!!login.rememberMe}
+                            />
+                            <Label htmlFor="rememberMe" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                                {msgStr("rememberMe")}
+                            </Label>
+                        </div>
+                    )}
+
+                    <div className="space-y-4">
+                        <Button 
+                            tabIndex={4} 
+                            disabled={isLoginButtonDisabled} 
+                            type="submit" 
+                            className="w-full h-10"
+                        >
+                            {msgStr("doLogIn")}
+                        </Button>
+                    </div>
+                </form>
+            )}
         </div>
     );
 
-    // Instead of using Template, render our custom layout directly
+    // Login-02 inspired layout matching Login.tsx structure
     return (
-        <div className="flex min-h-screen w-full">
-            {/* Left Column - Interactive Map Section */}
-            <div className="hidden md:block md:w-1/2 relative">
-                <MapBackground hoveredArea={hoveredArea} onHoverArea={setHoveredArea} />
+        <div className="grid min-h-svh lg:grid-cols-2">
+            {/* Left Column - Login Form Section */}
+            <div className="flex flex-col gap-4 p-6 md:p-10">
+                <div className="flex flex-1 items-center justify-center">
+                    <div className="w-full max-w-xs space-y-6">
+                        <div className="flex flex-col space-y-2 text-center">
+                            <h1 className="text-2xl font-semibold tracking-tight">
+                                Welcome back
+                            </h1>
+                            <p className="text-sm text-muted-foreground">
+                                Enter your username to continue to your account
+                            </p>
+                        </div>
+                        
+                        {socialProvidersNode}
+                        
+                        {formNode}
+                        
+                        {infoNode}
+                    </div>
+                </div>
             </div>
             
-            {/* Right Column - Login Form Section */}
-            <div className="w-full md:w-1/2 flex items-center justify-center p-8">
-                <div className="w-full max-w-md space-y-6">
-                    <div className="mb-8">
-                        <TrackSwiftlyLogo />
-                    </div>
-                    
-                    {socialProvidersNode}
-                    
-                    {formNode}
-                    
-                    {infoNode}
+            {/* Right Column - Static Map Background with Logo */}
+            <div 
+                className="relative hidden bg-muted lg:block bg-cover bg-center bg-no-repeat"
+                style={{
+                    backgroundImage: "url('/backgrounds/digital-map-with-road-network-highlights-routes-with-line-se/26aa712b-979e-4494-b7a0-457468712aca.jpg')"
+                }}
+            >
+                {/* Dark overlay for better logo visibility */}
+                <div className="absolute inset-0 bg-black/20"></div>
+                {/* Logo overlay on the image */}
+                <div className="absolute bottom-10 left-10 z-10">
+                    <TrackSwiftlyLogo />
                 </div>
             </div>
         </div>
