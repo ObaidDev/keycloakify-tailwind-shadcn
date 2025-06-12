@@ -32,22 +32,23 @@ export default function Register(props: RegisterProps) {
     const [areTermsAccepted, setAreTermsAccepted] = useState(false);
     const [hoveredArea, setHoveredArea] = useState<string | null>(null);
 
-    // Instead of using Template, render our custom layout directly
+    // Login-02 inspired layout matching Login.tsx structure
     return (
-        <div className="flex min-h-screen w-full">
-            {/* Left Column - Interactive Map Section */}
-            <div className="hidden md:block md:w-1/2 relative">
-                <MapBackground hoveredArea={hoveredArea} onHoverArea={setHoveredArea} />
+        <div className="grid min-h-svh lg:grid-cols-2">
+            {/* Left Column - Registration Form Section */}
+            <div className="flex flex-col gap-4 p-6 md:p-10">
+                <div className="flex flex-1 items-center justify-center">
+                    <div className="w-full max-w-xs space-y-6">
+                        <div className="flex flex-col space-y-2 text-center">
+                            <h1 className="text-2xl font-semibold tracking-tight">
+                                Create an account
+                            </h1>
+                            <p className="text-sm text-muted-foreground">
+                                Enter your details to create your account
+                            </p>
             </div>
             
-            {/* Right Column - Registration Form Section */}
-            <div className="w-full md:w-1/2 flex items-center justify-center p-8">
-                <div className="w-full max-w-md space-y-6">
-                    <div className="mb-8">
-                        <TrackSwiftlyLogo />
-                    </div>
-                    
-                    <form id="kc-register-form" className="space-y-6" action={url.registrationAction} method="post">
+                        <form id="kc-register-form" className="space-y-4" action={url.registrationAction} method="post">
                         <UserProfileFormFields
                             kcContext={kcContext}
                             i18n={i18n}
@@ -76,18 +77,40 @@ export default function Register(props: RegisterProps) {
                             <Button
                                 disabled={!isFormSubmittable || (termsAcceptanceRequired && !areTermsAccepted)}
                                 type="submit"
-                                className="w-full"
+                                    className="w-full h-10"
                             >
                                 {msgStr("doRegister")}
                             </Button>
                             
                             <div className="text-center">
-                                <a href={url.loginUrl} className={buttonVariants({ variant: "link" })}>
-                                    {msg("backToLogin")}
-                                </a>
+                                    <span className="text-sm text-muted-foreground">
+                                        Already have an account?{" "}
+                                        <a 
+                                            href={url.loginUrl} 
+                                            className="font-medium text-primary underline underline-offset-4 hover:text-primary/90"
+                                        >
+                                            Sign in
+                                        </a>
+                                    </span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                             </div>
                         </div>
-                    </form>
+            
+            {/* Right Column - Animated Map Section with Logo */}
+             <div 
+                    className="relative hidden bg-muted lg:block bg-cover bg-center bg-no-repeat"
+                    style={{
+                        backgroundImage: "url('/backgrounds/digital-map-with-road-network-highlights-routes-with-line-se/26aa712b-979e-4494-b7a0-457468712aca.jpg')"
+                    }}
+                >
+                {/* Dark overlay for better logo visibility */}
+                <div className="absolute inset-0 bg-black/20"></div>
+                {/* Logo overlay on the image */}
+                <div className="absolute bottom-10 left-10 z-10">
+                    <TrackSwiftlyLogo />
                 </div>
             </div>
         </div>
