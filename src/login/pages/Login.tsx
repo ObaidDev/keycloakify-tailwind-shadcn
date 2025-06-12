@@ -14,14 +14,15 @@ import SocialProviders from "../../components/ui/SocialProviders";
 import { kcSanitize } from "keycloakify/lib/kcSanitize";
 import TrackSwiftlyLogo from "../../components/ui/TrackSwiftlyLogo";
 import MapBackground from "../../components/ui/MapBackground";
+import mapBackgroundImage from "../../assets/img/digital-map-with-road-network-highlights-routes-with-line-se/26aa712b-979e-4494-b7a0-457468712aca.jpg";
+import { LoadingSpinner } from "../../components/ui/LoadingSpinner";
+import { useImageLoader } from "../../hooks/useImageLoader";
+
+
 
 export default function Login(props: PageProps<Extract<KcContext, { pageId: "login.ftl" }>, I18n>) {
-    const [bgLoaded, setBgLoaded] = useState(false);
     const [hoveredArea, setHoveredArea] = useState<string | null>(null);
-
-    useEffect(() => {
-        setBgLoaded(true);
-    }, []);
+    const { isLoaded: bgLoaded } = useImageLoader(mapBackgroundImage);
 
     const { kcContext, i18n, doUseDefaultCss, classes } = props;
 
@@ -42,11 +43,7 @@ export default function Login(props: PageProps<Extract<KcContext, { pageId: "log
     
     // block the login page from rendering until the background image is fully loaded
     if (!bgLoaded) {
-        return (
-          <div className="w-screen h-screen flex items-center justify-center bg-black">
-            <span className="text-white text-lg">Loading...</span>
-          </div>
-        );
+        return <LoadingSpinner message="Loading your secure login..." />;
     }
 
     const infoNode = (
@@ -228,7 +225,7 @@ export default function Login(props: PageProps<Extract<KcContext, { pageId: "log
              <div 
                 className="relative hidden bg-muted lg:block bg-cover bg-center bg-no-repeat"
                 style={{
-                    backgroundImage: "url('/backgrounds/digital-map-with-road-network-highlights-routes-with-line-se/26aa712b-979e-4494-b7a0-457468712aca.jpg')"
+                    backgroundImage: `url(${mapBackgroundImage})`
                 }}
             >
                 {/* Dark overlay for better logo visibility */}
