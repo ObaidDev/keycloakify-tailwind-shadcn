@@ -8,8 +8,11 @@ import type { I18n } from "../i18n";
 import { Button, buttonVariants } from "../../components/ui/button";
 import { checkboxVariants } from "../../components/ui/checkbox";
 import { kcSanitize } from "keycloakify/lib/kcSanitize";
-import MapBackground from "../../components/ui/MapBackground";
 import TrackSwiftlyLogo from "../../components/ui/TrackSwiftlyLogo";
+import mapBackgroundImage from "../../assets/img/digital-map-with-road-network-highlights-routes-with-line-se/26aa712b-979e-4494-b7a0-457468712aca.jpg";
+import { LoadingSpinner } from "../../components/ui/LoadingSpinner";
+import { useImageLoader } from "../../hooks/useImageLoader";
+
 
 type RegisterProps = PageProps<Extract<KcContext, { pageId: "register.ftl" }>, I18n> & {
     UserProfileFormFields: LazyOrNot<(props: UserProfileFormFieldsProps) => JSX.Element>;
@@ -30,7 +33,12 @@ export default function Register(props: RegisterProps) {
 
     const [isFormSubmittable, setIsFormSubmittable] = useState(false);
     const [areTermsAccepted, setAreTermsAccepted] = useState(false);
-    const [hoveredArea, setHoveredArea] = useState<string | null>(null);
+    const { isLoaded: bgLoaded } = useImageLoader(mapBackgroundImage);
+
+    // Block the registration page from rendering until the background image is fully loaded
+    if (!bgLoaded) {
+        return <LoadingSpinner message="Setting up your registration..." />;
+    }
 
     // Login-02 inspired layout matching Login.tsx structure
     return (
@@ -99,13 +107,13 @@ export default function Register(props: RegisterProps) {
                             </div>
                         </div>
             
-            {/* Right Column - Animated Map Section with Logo */}
-             <div 
-                    className="relative hidden bg-muted lg:block bg-cover bg-center bg-no-repeat"
-                    style={{
-                        backgroundImage: "url('/backgrounds/digital-map-with-road-network-highlights-routes-with-line-se/26aa712b-979e-4494-b7a0-457468712aca.jpg')"
-                    }}
-                >
+            {/* Right Column - Static Map Background with Logo */}
+            <div 
+                className="relative hidden bg-muted lg:block bg-cover bg-center bg-no-repeat"
+                style={{
+                    backgroundImage: `url(${mapBackgroundImage})`
+                }}
+            >
                 {/* Dark overlay for better logo visibility */}
                 <div className="absolute inset-0 bg-black/20"></div>
                 {/* Logo overlay on the image */}
