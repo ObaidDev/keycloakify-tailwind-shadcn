@@ -14,7 +14,8 @@ import SocialProviders from "../../components/ui/SocialProviders";
 import { kcSanitize } from "keycloakify/lib/kcSanitize";
 import TrackSwiftlyLogo from "../../components/ui/TrackSwiftlyLogo";
 import MapBackground from "../../components/ui/MapBackground";
-import mapBackgroundImage from "../../assets/img/digital-map-with-road-network-highlights-routes-with-line-se/26aa712b-979e-4494-b7a0-457468712aca.jpg";
+// import mapBackgroundImage from "../../assets/img/digital-map-with-road-network-highlights-routes-with-line-se/26aa712b-979e-4494-b7a0-457468712aca.jpg";
+import mapBackgroundImage from "../../assets/img/OSIEU30.jpg";
 import { LoadingSpinner } from "../../components/ui/LoadingSpinner";
 import { useImageLoader } from "../../hooks/useImageLoader";
 
