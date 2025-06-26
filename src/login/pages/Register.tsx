@@ -9,7 +9,8 @@ import { Button, buttonVariants } from "../../components/ui/button";
 import { checkboxVariants } from "../../components/ui/checkbox";
 import { kcSanitize } from "keycloakify/lib/kcSanitize";
 import TrackSwiftlyLogo from "../../components/ui/TrackSwiftlyLogo";
-import mapBackgroundImage from "../../assets/img/digital-map-with-road-network-highlights-routes-with-line-se/26aa712b-979e-4494-b7a0-457468712aca.jpg";
+// import mapBackgroundImage from "../../assets/img/digital-map-with-road-network-highlights-routes-with-line-se/26aa712b-979e-4494-b7a0-457468712aca.jpg";
+import mapBackgroundImage from "../../assets/img/OSIEU30.jpg";
 import { LoadingSpinner } from "../../components/ui/LoadingSpinner";
 import { useImageLoader } from "../../hooks/useImageLoader";
 
