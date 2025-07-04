@@ -9,6 +9,7 @@ import { Button, buttonVariants } from "../../components/ui/button";
 import { checkboxVariants } from "../../components/ui/checkbox";
 import { kcSanitize } from "keycloakify/lib/kcSanitize";
 import TrackSwiftlyLogo from "../../components/ui/TrackSwiftlyLogo";
+import logoGeometer from "@/assets/img/logo_geomter_500x500.png"
 import mapBackgroundImage from "../../assets/img/digital-map-with-road-network-highlights-routes-with-line-se/26aa712b-979e-4494-b7a0-457468712aca.jpg";
 import { LoadingSpinner } from "../../components/ui/LoadingSpinner";
 import { useImageLoader } from "../../hooks/useImageLoader";
@@ -47,6 +48,16 @@ export default function Register(props: RegisterProps) {
             <div className="flex flex-col gap-4 p-6 md:p-10">
                 <div className="flex flex-1 items-center justify-center">
                     <div className="w-full max-w-xs space-y-6">
+
+                        {/* Geometer Logo */}
+                        <div className="flex justify-center mb-8 rounded-lg">
+                            <img 
+                                src={logoGeometer}
+                                alt="Geometer Logo"
+                                className="h-16 w-auto rounded-sm"
+                            />
+                        </div>
+
                         <div className="flex flex-col space-y-2 text-center">
                             <h1 className="text-2xl font-semibold tracking-tight">
                                 Create an account
